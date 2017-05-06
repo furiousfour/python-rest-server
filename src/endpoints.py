@@ -1,6 +1,9 @@
+import urllib2
+
 from flask import Flask
 from pymongo import MongoClient
 from flask import Response
+from geopy.geocoders import Nominatim
 
 from ambulance_status import get_list_of_occupied_ambulance
 from get_closest import get_closet_ambulance_detail
@@ -10,11 +13,14 @@ app = Flask(__name__)
 
 @app.route('/assign-ambulance/<lat>/<longi>')
 def assign_ambulance(lat, longi):
+    geolocator = Nominatim()
     list_of_free_ambulance = get_list_of_occupied_ambulance('false')
     ambulance_detail = get_closet_ambulance_detail(lat, longi, list_of_free_ambulance)
+    des = geolocator.reverse((lat, longi)).address
     if ambulance_detail is not None:
-        print "hi"
-    # make a url get call to the
+        urllib2.urlopen(
+            "http://54.169.6.96/api/vehicle/alert?vehicleID=" + ambulance_detail['vehicleID'] + "&latitude=" +
+            ambulance_detail['latitude'] + "&longitude=" + ambulance_detail['longitude'] + "&locationName=" + des)
     return 'success'
 
 

@@ -15,17 +15,28 @@ def notify_signals_for_ambulance(lat, long, vehicle_id):
     collection = db['traffic_signals_notification']
     if signal_detail != None:
         data = collection.find({"vehicleID": str(vehicle_id), "latitude": str(signal_detail['La_x']),
-                                "longitude": str(signal_detail['Lo_x'])})
-        if data.count() > 0 and (datetime.datetime.utcnow() - data['timestamp']).total_seconds() < 300:
-            return
+                                "longitude": str(signal_detail['Lo_x'])}).sort("_id",-1)
+        try:
+            if data.count() > 0 and (datetime.datetime.utcnow() - data[0]['timestamp']).total_seconds() < 300:
+                return
+        except Exception as inst:
+            print inst
         point_for_data_first = (str(signal_detail['La_x']), str(signal_detail['Lo_x']))
         geolocator = Nominatim()
         collection_second = db['assigned_ambulance']
-        data_second = collection_second.find_one({"vehicleID": id})
+        data_second = collection_second.find_one({"vehicle_id": str(vehicle_id)})
         current_location = geolocator.reverse(point_for_data_first).address
+        # print point_for_data_first
         collection.insert({"vehicleID": str(vehicle_id), "latitude": str(signal_detail['La_x']),
-                           "longitude": str(signal_detail['Lo_x']), "current_location": current_location,
+                           "longitude": str(signal_detail['Lo_x']), "current_location": str(current_location),
                            "destination": str(data_second['des_name']), "timestamp": datetime.datetime.utcnow()})
 
         # make call with phonenumber, id_of_vehicle
-        # urllib2.urlopen("/api/makecall/signal_detail['Lo_x']/{id_of_ambulance}").read()
+        phn = str(signal_detail['phone_no'])
+
+        # localhost:3000 / api / makeCall?phonenumber = +919108665075 & ambulanceid = 100
+        out=urllib2.urlopen("http://13.228.23.221/api/makeCall?phonenumber="+phn+"&ambulanceid="+vehicle_id)
+
+# def mod():
+#     urllib2.urlopen("http://52.77.53.23:9000/test/100/test.xml")
+# mod()
