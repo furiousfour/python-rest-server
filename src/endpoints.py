@@ -11,8 +11,9 @@ app = Flask(__name__)
 @app.route('/assign-ambulance/<lat>/<longi>')
 def assign_ambulance(lat, longi):
     list_of_free_ambulance = get_list_of_occupied_ambulance('false')
-    lat, longi = get_closet_ambulance_detail(lat, longi, list_of_free_ambulance)
-    if list_of_free_ambulance is not None:
+    ambulance_detail = get_closet_ambulance_detail(lat, longi, list_of_free_ambulance)
+    if ambulance_detail is not None:
+        print "hi"
     # make a url get call to the
     return 'success'
 

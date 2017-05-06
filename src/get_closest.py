@@ -29,12 +29,12 @@ def get_closet(list_of_signals_coordinates, source, threshold):
 def get_closet_ambulance_detail(lat, long, list_of_free_ambulance):
     collection = db['traffic_signals']
     source = (lat, long)
-    list_of_ambulance_coordinates = list(map(lambda x: [(x['latitude'], x['longitude'])], list_of_free_ambulance))
+    list_of_ambulance_coordinates = list(map(lambda x: (x['latitude'], x['longitude']), list_of_free_ambulance))
     lat, long = get_closet_ambulance(list_of_ambulance_coordinates, source)
-    if lat == 0 and long == 0:
-        return None
-    cursor = collection.find_one({'La_x': lat, 'Lo_x': long})
-    return cursor
+    for ambulance in list_of_free_ambulance:
+        if ambulance['latitude'] == lat and ambulance['longitude'] == long:
+            return ambulance
+    return None
 
 
 def get_closet_ambulance(list_of_ambulance_coordinates, source):
