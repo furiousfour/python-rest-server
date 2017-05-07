@@ -13,6 +13,9 @@ app = Flask(__name__)
 
 @app.route('/assign-ambulance/<lat>/<longi>')
 def assign_ambulance(lat, longi):
+    client = MongoClient("ec2-13-228-23-221.ap-southeast-1.compute.amazonaws.com:27017")
+    db = client['greenway']
+    collection_first = db['assigned_ambulance']
     geolocator = Nominatim()
     list_of_free_ambulance = get_list_of_occupied_ambulance('false')
     ambulance_detail = get_closet_ambulance_detail(lat, longi, list_of_free_ambulance)
@@ -24,7 +27,9 @@ def assign_ambulance(lat, longi):
             "http://54.169.6.96/api/vehicle/alert?vehicleID=" + str(ambulance_detail['vehicleID']) + "&latitude=" +
             ambulance_detail['latitude'] + "&longitude=" + ambulance_detail['longitude'] + "&locationName=" + des)
         # urllib2.urlopen("http://54.169.6.96/api/vehicle/alert?vehicleID=" + str(ambulance_detail['vehicleID']) + "&latitude=" +str(ambulance_detail['latitude']) + "&longitude=" + str(ambulance_detail['longitude']) + "&locationName=SP InfoCity")
-        urllib2.urlopen("http://54.169.6.96/api/vehicle/alert?vehicleID=124&latitude="+str(ambulance_detail['latitude'])+"&longitude="+str(ambulance_detail['longitude'])+"&locationName=Indore")
+        urllib2.urlopen("http://54.169.6.96/api/vehicle/alert?vehicleID=124&latitude=" + str(
+            ambulance_detail['latitude']) + "&longitude=" + str(ambulance_detail['longitude']) + "&locationName=Indore")
+
     return 'success'
 
 
