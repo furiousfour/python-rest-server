@@ -28,7 +28,7 @@ def assign_ambulance(lat, longi):
             ambulance_detail['latitude'] + "&longitude=" + ambulance_detail['longitude'] + "&locationName=" + des)
         # urllib2.urlopen("http://54.169.6.96/api/vehicle/alert?vehicleID=" + str(ambulance_detail['vehicleID']) + "&latitude=" +str(ambulance_detail['latitude']) + "&longitude=" + str(ambulance_detail['longitude']) + "&locationName=SP InfoCity")
         urllib2.urlopen("http://54.169.6.96/api/vehicle/alert?vehicleID=124&latitude=" + str(
-            ambulance_detail['latitude']) + "&longitude=" + str(ambulance_detail['longitude']) + "&locationName=Indore")
+            ambulance_detail['latitude']) + "&longitude=" + str(ambulance_detail['longitude']) + "&locationName=SP Infocity")
 
     return 'success'
 
