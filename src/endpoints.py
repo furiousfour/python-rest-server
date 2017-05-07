@@ -17,10 +17,14 @@ def assign_ambulance(lat, longi):
     list_of_free_ambulance = get_list_of_occupied_ambulance('false')
     ambulance_detail = get_closet_ambulance_detail(lat, longi, list_of_free_ambulance)
     des = geolocator.reverse((lat, longi)).address
+    print "I am here"
+    print ambulance_detail
     if ambulance_detail is not None:
-        urllib2.urlopen(
-            "http://54.169.6.96/api/vehicle/alert?vehicleID=" + ambulance_detail['vehicleID'] + "&latitude=" +
+        print (
+            "http://54.169.6.96/api/vehicle/alert?vehicleID=" + str(ambulance_detail['vehicleID']) + "&latitude=" +
             ambulance_detail['latitude'] + "&longitude=" + ambulance_detail['longitude'] + "&locationName=" + des)
+        # urllib2.urlopen("http://54.169.6.96/api/vehicle/alert?vehicleID=" + str(ambulance_detail['vehicleID']) + "&latitude=" +str(ambulance_detail['latitude']) + "&longitude=" + str(ambulance_detail['longitude']) + "&locationName=SP InfoCity")
+        urllib2.urlopen("http://54.169.6.96/api/vehicle/alert?vehicleID=124&latitude="+str(ambulance_detail['latitude'])+"&longitude="+str(ambulance_detail['longitude'])+"&locationName=Indore")
     return 'success'
 
 
