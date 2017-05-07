@@ -31,12 +31,6 @@ def notify_signals_for_ambulance(lat, long, vehicle_id):
                            "longitude": str(signal_detail['Lo_x']), "current_location": str(current_location),
                            "destination": str(data_second['des_name']), "timestamp": datetime.datetime.utcnow()})
 
-        # make call with phonenumber, id_of_vehicle
         phn = str(signal_detail['phone_no'])
 
-        # localhost:3000 / api / makeCall?phonenumber = +919108665075 & ambulanceid = 100
         out=urllib2.urlopen("http://13.228.23.221/api/makeCall?phonenumber="+phn+"&ambulanceid="+vehicle_id)
-
-# def mod():
-#     urllib2.urlopen("http://52.77.53.23:9000/test/100/test.xml")
-# mod()

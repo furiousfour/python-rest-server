@@ -29,7 +29,7 @@ def give_greetingss(ambulance_id):
     client = MongoClient("ec2-13-228-23-221.ap-southeast-1.compute.amazonaws.com:27017")
     db = client['greenway']
     collection_first = db['traffic_signals_notification']
-    data_first = collection_first.find_one({"vehicleID": id})
+    data_first = collection_first.find_one({"vehicleID": ambulance_id})
     source = data_first['current_location']
     destination = data_first['destination']
     response = '<?xml version="1.0" encoding="UTF-8" ?><Response><Say voice="alice">An ambulance is heading from ' + source + ' to place ' + destination + '. Please Clear the traffic. Thank you.</Say></Response>'
